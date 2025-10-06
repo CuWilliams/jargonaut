@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate JargoNaut Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+        }
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #4338CA;
+        }
+        canvas {
+            margin: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>JargoNaut Icon Generator</h1>
+    <p>Click each button to download each icon size:</p>
+    
+    <button onclick="generateIcon(16)">Download 16x16</button>
+    <button onclick="generateIcon(48)">Download 48x48</button>
+    <button onclick="generateIcon(128)">Download 128x128</button>
+    
+    <br><br>
+    <canvas id="canvas"></canvas>
+    
+    <script>
+        function generateIcon(size) {
+            const canvas = document.getElementById('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background - nice purple
+            ctx.fillStyle = '#4F46E5';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Text - "JN" for JargoNaut
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size/2}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('JN', size/2, size/2);
+            
+            // Download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon${size}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>
