@@ -1,0 +1,18 @@
+{
+  "name": "jargonaut",
+  "version": "1.0.0",
+  "description": "A browser extension that explains tech jargon in tweets - powered by local AI",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.79"
+  }
+}

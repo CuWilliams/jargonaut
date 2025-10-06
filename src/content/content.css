@@ -104,3 +104,40 @@
     border-radius: 6px;
     border-left: 3px solid #667eea;
 }
+
+/* Original tweet display */
+.jargonaut-original-tweet {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 3px solid #667eea;
+    margin-bottom: 10px;
+}
+
+.jargonaut-original-tweet strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #4F46E5;
+    font-size: 13px;
+}
+
+.jargonaut-original-tweet p {
+    margin: 0;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* Explanation styling */
+.jargonaut-explanation {
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.jargonaut-explanation p {
+    margin: 0 0 10px 0;
+}
+
+.jargonaut-explanation strong {
+    color: #4F46E5;
+}

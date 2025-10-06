@@ -1,38 +1,51 @@
-// This will handle the popup interactions
 document.addEventListener('DOMContentLoaded', function() {
-    const setupBtn = document.getElementById('setupBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const apiKeyInput = document.getElementById('apiKeyInput');
     const statusDiv = document.getElementById('status');
+    const setupSection = document.getElementById('setupSection');
+    const instructions = document.getElementById('instructions');
     
-    // Check if AI model is already set up
+    // Check if already set up
     chrome.storage.local.get(['modelSetup'], function(result) {
         if (result.modelSetup) {
-            statusDiv.innerHTML = '<p>✅ AI Model ready!</p>';
+            statusDiv.innerHTML = '<p>API key configured!</p>';
             statusDiv.style.background = '#f0fdf4';
-            setupBtn.textContent = 'Model Ready';
-            setupBtn.disabled = true;
-            setupBtn.style.opacity = '0.6';
+            setupSection.style.display = 'none';
+            instructions.style.display = 'block';
         }
     });
     
-    // Setup button click
-    setupBtn.addEventListener('click', function() {
-        statusDiv.innerHTML = '<p>⏳ Setting up AI model... (this may take a minute)</p>';
+    // Save button click
+    saveBtn.addEventListener('click', function() {
+        const apiKey = apiKeyInput.value.trim();
+        
+        if (!apiKey) {
+            statusDiv.innerHTML = '<p>Please enter an API key</p>';
+            statusDiv.style.background = '#fee2e2';
+            statusDiv.querySelector('p').style.color = '#991b1b';
+            return;
+        }
+        
+        statusDiv.innerHTML = '<p>Testing API key...</p>';
         statusDiv.style.background = '#fef3c7';
         statusDiv.querySelector('p').style.color = '#92400e';
         
-        // Send message to background script to initialize AI
-        chrome.runtime.sendMessage({action: 'setupModel'}, function(response) {
-            if (response.success) {
-                statusDiv.innerHTML = '<p>✅ Model setup complete!</p>';
-                statusDiv.style.background = '#f0fdf4';
-                setupBtn.textContent = 'Model Ready';
-                setupBtn.disabled = true;
-                setupBtn.style.opacity = '0.6';
-            } else {
-                statusDiv.innerHTML = '<p>❌ Setup failed. Please try again.</p>';
-                statusDiv.style.background = '#fee2e2';
-                statusDiv.querySelector('p').style.color = '#991b1b';
+        chrome.runtime.sendMessage(
+            { action: 'setupModel', apiKey: apiKey },
+            function(response) {
+                if (response.success) {
+                    statusDiv.innerHTML = '<p>Setup complete!</p>';
+                    statusDiv.style.background = '#f0fdf4';
+                    statusDiv.querySelector('p').style.color = '#166534';
+                    setupSection.style.display = 'none';
+                    instructions.style.display = 'block';
+                    apiKeyInput.value = '';
+                } else {
+                    statusDiv.innerHTML = '<p>Error: ' + response.error + '</p>';
+                    statusDiv.style.background = '#fee2e2';
+                    statusDiv.querySelector('p').style.color = '#991b1b';
+                }
             }
-        });
+        );
     });
 });

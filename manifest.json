@@ -1,16 +1,17 @@
 {
   "manifest_version": 3,
   "name": "JargoNaut",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Navigate tech jargon with AI-powered explanations. Understand every tweet.",
   "permissions": [
     "activeTab",
     "storage"
   ],
   "host_permissions": [
-    "https://twitter.com/*",
-    "https://x.com/*"
-  ],
+  "https://twitter.com/*",
+  "https://x.com/*",
+  "https://openrouter.ai/*"
+],
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_icon": {
