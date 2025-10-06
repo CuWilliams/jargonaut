@@ -1,0 +1,106 @@
+/* Floating button */
+#jargonaut-float-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 999999;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#jargonaut-float-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+#jargonaut-float-btn:active {
+    transform: scale(0.95);
+}
+
+/* Explanation window */
+#jargonaut-window {
+    position: fixed;
+    bottom: 110px;
+    right: 30px;
+    width: 400px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 999998;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.jargonaut-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#jargonaut-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+#jargonaut-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.jargonaut-content {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+.jargonaut-content p {
+    margin: 0 0 12px 0;
+    color: #333;
+}
+
+.jargonaut-hint {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+    background: #f3f4f6;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid #667eea;
+}
