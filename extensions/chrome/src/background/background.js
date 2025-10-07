@@ -1,6 +1,13 @@
-// Background service worker with OpenRouter API integration
+/**
+ * JargoNaut Chrome Extension - Background Script
+ * Uses core modules for AI functionality
+ */
 
-console.log('JargoNaut background script loaded');
+// Import core modules (copied into extension folder)
+importScripts('../../core/config.js');
+importScripts('../../core/ai-engine.js');
+
+console.log('JargoNaut background script loaded - v' + JargoNautConfig.version);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('Background received:', request);
@@ -18,6 +25,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return false;
 });
 
+/**
+ * Handle API key setup
+ */
 async function handleSetupModel(apiKey, sendResponse) {
     if (!apiKey || apiKey.trim().length === 0) {
         sendResponse({ success: false, error: 'Please enter an API key' });
@@ -25,60 +35,46 @@ async function handleSetupModel(apiKey, sendResponse) {
     }
     
     try {
-        await chrome.storage.local.set({ 
-            apiKey: apiKey,
-            modelSetup: true 
-        });
-        sendResponse({ success: true });
+        // Create AI instance to validate key
+        const ai = new JargoNautAI(apiKey);
+        const isValid = await ai.validateApiKey();
+        
+        if (isValid) {
+            await chrome.storage.local.set({ 
+                [JargoNautConfig.storage.apiKey]: apiKey,
+                [JargoNautConfig.storage.modelSetup]: true 
+            });
+            sendResponse({ success: true });
+        } else {
+            sendResponse({ success: false, error: 'Invalid API key' });
+        }
     } catch (error) {
         sendResponse({ success: false, error: error.message });
     }
 }
 
+/**
+ * Explain tweet text using AI
+ */
 async function explainTweet(tweetText, sendResponse) {
     try {
-        const result = await chrome.storage.local.get(['apiKey', 'modelSetup']);
+        // Get stored API key
+        const result = await chrome.storage.local.get([
+            JargoNautConfig.storage.apiKey, 
+            JargoNautConfig.storage.modelSetup
+        ]);
         
-        if (!result.modelSetup || !result.apiKey) {
+        if (!result[JargoNautConfig.storage.modelSetup] || !result[JargoNautConfig.storage.apiKey]) {
             sendResponse({ 
                 explanation: 'Please set up your API key first in the extension popup.' 
             });
             return;
         }
         
-        console.log('Calling OpenRouter API...');
+        // Create AI instance and get explanation
+        const ai = new JargoNautAI(result[JargoNautConfig.storage.apiKey]);
+        const explanation = await ai.explainJargon(tweetText);
         
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + result.apiKey,
-                'Content-Type': 'application/json',
-                'HTTP-Referer': 'https://jargonaut.app',
-                'X-Title': 'JargoNaut'
-            },
-            body: JSON.stringify({
-                model: 'meta-llama/llama-3.2-3b-instruct:free',
-                messages: [
-                    {
-                        role: 'user',
-                        content: 'Explain this tweet in simple terms for someone learning to code. Break down any technical jargon or acronyms:\n\n' + tweetText
-                    }
-                ]
-            })
-        });
-        
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API Error:', errorText);
-            throw new Error('API returned status ' + response.status);
-        }
-        
-        const data = await response.json();
-        console.log('API Response:', data);
-        
-        const explanation = data.choices[0].message.content;
         sendResponse({ explanation: explanation });
         
     } catch (error) {

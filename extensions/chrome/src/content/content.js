@@ -1,153 +1,121 @@
-// Create the floating JargoNaut button
-function createFloatingButton() {
-    // Check if button already exists
-    if (document.getElementById('jargonaut-float-btn')) {
+/**
+ * JargoNaut Chrome Extension - Content Script
+ * Runs on Twitter/X pages and uses platform-specific parser
+ */
+
+console.log('JargoNaut content script loaded');
+
+// Create floating button
+const floatBtn = document.createElement('div');
+floatBtn.id = 'jargonaut-float-btn';
+floatBtn.innerHTML = '🚀';
+floatBtn.title = 'Click to explain this tweet';
+document.body.appendChild(floatBtn);
+
+// Create explanation window
+const explanationWindow = document.createElement('div');
+explanationWindow.id = 'jargonaut-window';
+explanationWindow.style.display = 'none';
+explanationWindow.innerHTML = `
+    <div class="jargonaut-header">
+        <span>JargoNaut Explanation</span>
+        <button id="jargonaut-close">✕</button>
+    </div>
+    <div class="jargonaut-content">
+        <p class="jargonaut-hint">Click on a tweet, then click the 🚀 button to get an explanation!</p>
+    </div>
+`;
+document.body.appendChild(explanationWindow);
+
+// Track the last clicked element
+let lastClickedElement = null;
+
+// Listen for clicks anywhere on the page
+document.addEventListener('click', function(e) {
+    // Don't capture clicks on JargoNaut's own UI elements
+    if (e.target.id === 'jargonaut-float-btn' || 
+        e.target.closest('#jargonaut-window')) {
         return;
     }
     
-    const button = document.createElement('div');
-    button.id = 'jargonaut-float-btn';
-    button.innerHTML = '🚀';
-    button.title = 'Click to explain tweets with JargoNaut';
-    
-    document.body.appendChild(button);
-    
-    // Button click handler
-    button.addEventListener('click', function() {
-        toggleTweetClickMode();
-    });
-}
+    console.log('Captured click on:', e.target);
+    lastClickedElement = e.target;
+}, true);
 
-// Track if we're in "click to explain" mode
-let clickModeActive = false;
-let clickListener = null;
-
-// Toggle tweet click mode
-function toggleTweetClickMode() {
-    clickModeActive = !clickModeActive;
-    const button = document.getElementById('jargonaut-float-btn');
+// Button click handler
+floatBtn.addEventListener('click', function(e) {
+    // Stop the button click from being captured as lastClickedElement
+    e.stopPropagation();
     
-    if (clickModeActive) {
-        // Activate click mode
-        button.style.transform = 'scale(1.2)';
-        button.style.boxShadow = '0 0 20px rgba(102, 126, 234, 0.8)';
-        showExplanationWindow('Click on any tweet to decode it! 🎯');
-        
-        // Add click listener to document
-        clickListener = function(e) {
-            const tweetElement = e.target.closest('article[data-testid="tweet"]');
-            if (tweetElement) {
-                e.preventDefault();
-                e.stopPropagation();
-                extractAndExplainTweet(tweetElement);
-            }
-        };
-        
-        document.addEventListener('click', clickListener, true);
-    } else {
-        // Deactivate click mode
-        button.style.transform = 'scale(1)';
-        button.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-        
-        if (clickListener) {
-            document.removeEventListener('click', clickListener, true);
-            clickListener = null;
-        }
+    if (!lastClickedElement) {
+        showExplanation('Please click on a tweet first!');
+        return;
     }
+    
+    // Extract tweet text from the clicked element
+    const tweetText = getTweetText(lastClickedElement);
+    
+    if (!tweetText) {
+        showExplanation('Could not find tweet text. Make sure you clicked on a tweet!');
+        return;
+    }
+    
+    showExplanation('Analyzing tweet... 🤔');
+    
+    // Send to background script for AI explanation
+    chrome.runtime.sendMessage(
+        { action: 'explainTweet', tweetText: tweetText },
+        function(response) {
+            if (response && response.explanation) {
+                showExplanation(response.explanation);
+            } else {
+                showExplanation('Error getting explanation. Please try again.');
+            }
+        }
+    );
+});
+
+// Close button handler
+document.getElementById('jargonaut-close').addEventListener('click', function() {
+    explanationWindow.style.display = 'none';
+});
+
+/**
+ * Show explanation in the window
+ */
+function showExplanation(text) {
+    const content = explanationWindow.querySelector('.jargonaut-content');
+    content.innerHTML = `<p>${text}</p>`;
+    explanationWindow.style.display = 'block';
 }
 
-// Extract tweet text and explain it
-function extractAndExplainTweet(tweetElement) {
-    // Find the tweet text within the article
-    const tweetTextElement = tweetElement.querySelector('[data-testid="tweetText"]');
+/**
+ * Get tweet text from clicked element
+ * This is Twitter-specific logic that will be in the platform parser
+ */
+function getTweetText(clickedElement) {
+    console.log('Extracting tweet text...');
+    
+    // Find the article (tweet container)
+    let article = clickedElement.closest('article');
+    
+    if (!article) {
+        console.log('No article found');
+        return null;
+    }
+
+    // Twitter's tweet text is in a div with lang attribute inside the article
+    let tweetTextElement = article.querySelector('div[lang]');
     
     if (!tweetTextElement) {
-        showExplanationWindow('❌ Could not find tweet text. Try clicking directly on the tweet content.');
-        return;
+        console.log('No tweet text element found');
+        return null;
     }
-    
-    const tweetText = tweetTextElement.innerText;
-    
-    if (!tweetText || tweetText.trim().length === 0) {
-        showExplanationWindow('❌ Tweet appears to be empty.');
-        return;
-    }
-    
-    // Show loading state
-    showExplanationWindow('🔄 Analyzing tweet...\n\n' + tweetText);
-    
-    // Deactivate click mode
-    clickModeActive = false;
-    const button = document.getElementById('jargonaut-float-btn');
-    button.style.transform = 'scale(1)';
-    button.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-    
-    if (clickListener) {
-        document.removeEventListener('click', clickListener, true);
-        clickListener = null;
-    }
-    
-    // Send to background script for AI processing
-    chrome.runtime.sendMessage({
-        action: 'explainTweet',
-        tweetText: tweetText
-    }, function(response) {
-        if (response && response.explanation) {
-            showExplanationWindow(response.explanation, tweetText);
-        } else {
-            showExplanationWindow('❌ AI model not ready. Click "Setup AI Model" in the extension popup first!', tweetText);
-        }
-    });
-}
 
-// Create or update explanation window
-function showExplanationWindow(content, originalTweet = null) {
-    let window = document.getElementById('jargonaut-window');
+    // Get the text content
+    let tweetText = tweetTextElement.innerText.trim();
     
-    if (!window) {
-        window = document.createElement('div');
-        window.id = 'jargonaut-window';
-        document.body.appendChild(window);
-    }
+    console.log('Extracted tweet text:', tweetText.substring(0, 50) + '...');
     
-    let html = `
-        <div class="jargonaut-header">
-            <span>🚀 JargoNaut</span>
-            <button id="jargonaut-close">✕</button>
-        </div>
-        <div class="jargonaut-content">
-    `;
-    
-    if (originalTweet) {
-        html += `
-            <div class="jargonaut-original-tweet">
-                <strong>Original Tweet:</strong>
-                <p>${originalTweet}</p>
-            </div>
-            <hr style="margin: 15px 0; border: none; border-top: 1px solid #e5e7eb;">
-        `;
-    }
-    
-    html += `
-            <div class="jargonaut-explanation">
-                ${content.split('\n').map(line => `<p>${line}</p>`).join('')}
-            </div>
-        </div>
-    `;
-    
-    window.innerHTML = html;
-    
-    // Close button handler
-    document.getElementById('jargonaut-close').addEventListener('click', function() {
-        window.remove();
-    });
+    return tweetText;
 }
-
-// Initialize when page loads
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createFloatingButton);
-} else {
-    createFloatingButton();
-}
-
-console.log('JargoNaut content script loaded!');
