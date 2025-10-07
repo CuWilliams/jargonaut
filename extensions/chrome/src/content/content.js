@@ -1,15 +1,21 @@
 /**
  * JargoNaut Chrome Extension - Content Script
- * Runs on Twitter/X pages and uses platform-specific parser
+ * Runs on Twitter/X and LinkedIn pages
  */
 
 console.log('JargoNaut content script loaded');
+
+// Detect which platform we're on
+const isTwitter = window.location.hostname === 'twitter.com' || window.location.hostname === 'x.com';
+const isLinkedIn = window.location.hostname === 'www.linkedin.com' || window.location.hostname === 'linkedin.com';
+
+console.log('Platform detected:', isTwitter ? 'Twitter/X' : isLinkedIn ? 'LinkedIn' : 'Unknown');
 
 // Create floating button
 const floatBtn = document.createElement('div');
 floatBtn.id = 'jargonaut-float-btn';
 floatBtn.innerHTML = '🚀';
-floatBtn.title = 'Click to explain this tweet';
+floatBtn.title = 'Click to explain this post';
 document.body.appendChild(floatBtn);
 
 // Create explanation window
@@ -22,7 +28,7 @@ explanationWindow.innerHTML = `
         <button id="jargonaut-close">✕</button>
     </div>
     <div class="jargonaut-content">
-        <p class="jargonaut-hint">Click on a tweet, then click the 🚀 button to get an explanation!</p>
+        <p class="jargonaut-hint">Click on a ${isTwitter ? 'tweet' : 'post'}, then click the 🚀 button to get an explanation!</p>
     </div>
 `;
 document.body.appendChild(explanationWindow);
@@ -44,27 +50,29 @@ document.addEventListener('click', function(e) {
 
 // Button click handler
 floatBtn.addEventListener('click', function(e) {
-    // Stop the button click from being captured as lastClickedElement
-    e.stopPropagation();
+    console.log('Rocket button clicked');
+    console.log('Last clicked element:', lastClickedElement);
     
     if (!lastClickedElement) {
-        showExplanation('Please click on a tweet first!');
+        showExplanation('Please click on a post first!');
         return;
     }
     
-    // Extract tweet text from the clicked element
-    const tweetText = getTweetText(lastClickedElement);
+    // Extract post text based on platform
+    const postText = getPostText(lastClickedElement);
     
-    if (!tweetText) {
-        showExplanation('Could not find tweet text. Make sure you clicked on a tweet!');
+    console.log('Extracted post text:', postText);
+    
+    if (!postText) {
+        showExplanation(`Could not find post text. Make sure you clicked on a ${isTwitter ? 'tweet' : 'LinkedIn post'}!`);
         return;
     }
     
-    showExplanation('Analyzing tweet... 🤔');
+    showExplanation('Analyzing post... 🤔');
     
     // Send to background script for AI explanation
     chrome.runtime.sendMessage(
-        { action: 'explainTweet', tweetText: tweetText },
+        { action: 'explainTweet', tweetText: postText },
         function(response) {
             if (response && response.explanation) {
                 showExplanation(response.explanation);
@@ -90,11 +98,22 @@ function showExplanation(text) {
 }
 
 /**
- * Get tweet text from clicked element
- * This is Twitter-specific logic that will be in the platform parser
+ * Get post text from clicked element - platform-aware
  */
-function getTweetText(clickedElement) {
-    console.log('Extracting tweet text...');
+function getPostText(clickedElement) {
+    if (isTwitter) {
+        return getTwitterPostText(clickedElement);
+    } else if (isLinkedIn) {
+        return getLinkedInPostText(clickedElement);
+    }
+    return null;
+}
+
+/**
+ * Get Twitter/X post text from clicked element
+ */
+function getTwitterPostText(clickedElement) {
+    console.log('Extracting Twitter post text...');
     
     // Find the article (tweet container)
     let article = clickedElement.closest('article');
@@ -118,4 +137,42 @@ function getTweetText(clickedElement) {
     console.log('Extracted tweet text:', tweetText.substring(0, 50) + '...');
     
     return tweetText;
+}
+
+/**
+ * Get LinkedIn post text from clicked element
+ */
+function getLinkedInPostText(clickedElement) {
+    console.log('LinkedInParser: Extracting post text...');
+    
+    // Find the post container - LinkedIn uses feed-shared-update-v2
+    let postContainer = clickedElement.closest('[class*="feed-shared-update-v2"]');
+    
+    if (!postContainer) {
+        console.log('LinkedInParser: No post container found');
+        return null;
+    }
+
+    // LinkedIn post text is in update-components-text class
+    let postTextElement = postContainer.querySelector('.update-components-text');
+    
+    if (!postTextElement) {
+        // Try alternative selector - sometimes it's in feed-shared-inline-show-more-text
+        postTextElement = postContainer.querySelector('[class*="feed-shared-inline-show-more-text"]');
+    }
+    
+    if (!postTextElement) {
+        console.log('LinkedInParser: No post text element found');
+        return null;
+    }
+
+    // Get the text content and clean it up
+    let postText = postTextElement.innerText.trim();
+    
+    // Remove "...more" or "...see more" text that LinkedIn adds
+    postText = postText.replace(/\.\.\.?\s*(see\s+)?more$/i, '').trim();
+    
+    console.log('LinkedInParser: Extracted post text:', postText.substring(0, 100) + '...');
+    
+    return postText;
 }
