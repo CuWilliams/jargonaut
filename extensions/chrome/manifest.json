@@ -8,10 +8,10 @@
     "storage"
   ],
   "host_permissions": [
-  "https://twitter.com/*",
-  "https://x.com/*",
-  "https://openrouter.ai/*"
-],
+    "https://twitter.com/*",
+    "https://x.com/*",
+    "https://openrouter.ai/*"
+  ],
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_icon": {
