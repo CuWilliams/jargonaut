@@ -14,7 +14,11 @@ console.log('Platform detected:', isTwitter ? 'Twitter/X' : isLinkedIn ? 'Linked
 // Create floating button
 const floatBtn = document.createElement('div');
 floatBtn.id = 'jargonaut-float-btn';
-floatBtn.innerHTML = '🚀';
+// Replace rocket emoji with sextant icon
+floatBtn.style.backgroundImage = `url(${chrome.runtime.getURL('icons/JargoNaut_Sextant_Button48px.png')})`;
+floatBtn.style.backgroundSize = 'contain';
+floatBtn.style.backgroundRepeat = 'no-repeat';
+floatBtn.style.backgroundPosition = 'center';
 floatBtn.title = 'Click to explain this post';
 document.body.appendChild(floatBtn);
 
@@ -28,7 +32,7 @@ explanationWindow.innerHTML = `
         <button id="jargonaut-close">✕</button>
     </div>
     <div class="jargonaut-content">
-        <p class="jargonaut-hint">Click on a ${isTwitter ? 'tweet' : 'post'}, then click the 🚀 button to get an explanation!</p>
+        <p class="jargonaut-hint">Click on a ${isTwitter ? 'tweet' : 'post'}, then click the JargoNaut button to get an explanation!</p>
     </div>
 `;
 document.body.appendChild(explanationWindow);
@@ -50,7 +54,7 @@ document.addEventListener('click', function(e) {
 
 // Button click handler
 floatBtn.addEventListener('click', function(e) {
-    console.log('Rocket button clicked');
+    console.log('JargoNaut button clicked');
     console.log('Last clicked element:', lastClickedElement);
     
     if (!lastClickedElement) {
