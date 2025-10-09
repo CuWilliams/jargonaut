@@ -68,7 +68,20 @@ class JargoNautAI {
      * @returns {string} - The formatted prompt
      */
     buildPrompt(text) {
-        return `Explain this text in simple terms for someone learning to code. Break down any technical jargon or acronyms:\n\n${text}`;
+        return `You are JargoNaut, a concise tech jargon translator. Analyze this post and ONLY explain technical jargon, acronyms, and industry-specific terms that someone learning tech might not understand.
+
+Rules:
+- Keep your TOTAL response under 100 words
+- Only explain technical terms, jargon, and acronyms
+- Skip obvious words and general concepts everyone knows
+- Use bullet points for multiple terms
+- Be direct and concise
+- If there's no jargon to explain, say "No technical jargon detected in this post."
+
+Post to analyze:
+"${text}"
+
+Explain only the jargon:`;
     }
 
     /**

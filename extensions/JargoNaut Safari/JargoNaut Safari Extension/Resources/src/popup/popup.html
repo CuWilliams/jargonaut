@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JargoNaut</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>JargoNaut</h1>
+            <p class="tagline">Navigate the jargon</p>
+        </div>
+        
+        <div class="status" id="status">
+            <p>Enter your API key to get started</p>
+        </div>
+        
+        <div class="setup" id="setupSection">
+    <h3>Setup:</h3>
+    <ol>
+        <li>Get a free API key from <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a></li>
+        <li>Paste it below</li>
+        <li>Click Save</li>
+    </ol>
+    
+    <input type="password" id="apiKeyInput" placeholder="Enter API key" />
+    <button id="saveBtn" class="primary-btn">Save API Key</button>
+</div>
+        
+        <div class="instructions" id="instructions" style="display: none;">
+            <h3>How to use:</h3>
+            <ol>
+                <li>Go to X/Twitter</li>
+                <li>Click the floating rocket button</li>
+                <li>Click any confusing tweet</li>
+                <li>Get AI explanations!</li>
+            </ol>
+        </div>
+        
+        <div class="footer">
+            <p class="version">v0.3.0 - Powered by AI</p>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
