@@ -46,6 +46,60 @@ body {
     color: #166534;
 }
 
+/* Setup section - now with better spacing */
+.setup {
+    padding: 20px;
+    background: white;
+}
+
+.setup h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #4F46E5;
+}
+
+.setup ol {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.setup li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.setup a {
+    color: #4F46E5;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.setup a:hover {
+    text-decoration: underline;
+}
+
+/* Improved input field */
+#apiKeyInput {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: border-color 0.2s;
+}
+
+#apiKeyInput:focus {
+    outline: none;
+    border-color: #4F46E5;
+}
+
+#apiKeyInput::placeholder {
+    color: #9ca3af;
+}
+
 .instructions {
     padding: 20px;
     background: white;
