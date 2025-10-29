@@ -1,5 +1,5 @@
 /**
- * JargoNaut Chrome Extension - Content Script
+ * JargoNaut Safari Extension - Content Script
  * Runs on Twitter/X and LinkedIn pages
  */
 
@@ -14,7 +14,10 @@ console.log('Platform detected:', isTwitter ? 'Twitter/X' : isLinkedIn ? 'Linked
 // Create floating button
 const floatBtn = document.createElement('div');
 floatBtn.id = 'jargonaut-float-btn';
-floatBtn.innerHTML = '🚀';
+floatBtn.style.backgroundImage = `url(${browser.runtime.getURL('icons/button-48.png')})`;
+floatBtn.style.backgroundSize = 'contain';
+floatBtn.style.backgroundRepeat = 'no-repeat';
+floatBtn.style.backgroundPosition = 'center';
 floatBtn.title = 'Click to explain this post';
 document.body.appendChild(floatBtn);
 
@@ -28,7 +31,7 @@ explanationWindow.innerHTML = `
         <button id="jargonaut-close">✕</button>
     </div>
     <div class="jargonaut-content">
-        <p class="jargonaut-hint">Click on a ${isTwitter ? 'tweet' : 'post'}, then click the 🚀 button to get an explanation!</p>
+        <p class="jargonaut-hint">Click on a ${isTwitter ? 'tweet' : 'post'}, then click the JargoNaut button to get an explanation!</p>
     </div>
 `;
 document.body.appendChild(explanationWindow);
