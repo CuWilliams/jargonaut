@@ -17,10 +17,10 @@
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_icon": {
-      "16": "icons/JargoNaut_Logo16px.png",
-      "32": "icons/JargoNaut_Logo32px.png",
-      "48": "icons/JargoNaut_Logo48px.png",
-      "128": "icons/JargoNaut_Logo128px.png"
+      "16": "icons/icon-16.png",
+"32": "icons/icon-32.png",
+"48": "icons/icon-48.png",
+"128": "icons/icon-128.png"
     }
   },
   "content_scripts": [
@@ -39,14 +39,14 @@
     "service_worker": "src/background/background.js"
   },
   "icons": {
-    "16": "icons/JargoNaut_Logo16px.png",
-    "32": "icons/JargoNaut_Logo32px.png",
-    "48": "icons/JargoNaut_Logo48px.png",
-    "128": "icons/JargoNaut_Logo128px.png"
+    "16": "icons/icon-16.png",
+"32": "icons/icon-32.png",
+"48": "icons/icon-48.png",
+"128": "icons/icon-128.png"
   },
   "web_accessible_resources": [
     {
-      "resources": ["icons/JargoNaut_Sextant_Button48px.png"],
+      "resources": ["icons/button-48.png"],
       "matches": [
         "https://twitter.com/*",
         "https://x.com/*",

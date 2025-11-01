@@ -15,7 +15,7 @@ console.log('Platform detected:', isTwitter ? 'Twitter/X' : isLinkedIn ? 'Linked
 const floatBtn = document.createElement('div');
 floatBtn.id = 'jargonaut-float-btn';
 // Replace rocket emoji with sextant icon
-floatBtn.style.backgroundImage = `url(${chrome.runtime.getURL('icons/JargoNaut_Sextant_Button48px.png')})`;
+floatBtn.style.backgroundImage = `url(${chrome.runtime.getURL('icons/button-48.png')})`;
 floatBtn.style.backgroundSize = 'contain';
 floatBtn.style.backgroundRepeat = 'no-repeat';
 floatBtn.style.backgroundPosition = 'center';
