@@ -1,8 +1,8 @@
 /**
- * JargoNaut Core AI Engine
- * Handles communication with OpenRouter API
- * This code is reusable across all browsers and platforms
- */
+* JargoNaut Core AI Engine
+* Handles communication with OpenRouter API
+* This code is reusable across all browsers and platforms
+*/
 
 class JargoNautAI {
     constructor(apiKey) {
@@ -48,6 +48,11 @@ class JargoNautAI {
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error('JargoNaut AI: API Error:', errorText);
+                
+                if (response.status === 429) {
+                    throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+                }
+                
                 throw new Error(`API returned status ${response.status}`);
             }
 
@@ -62,11 +67,6 @@ class JargoNautAI {
         }
     }
 
-    /**
-     * Build the AI prompt for explaining jargon
-     * @param {string} text - The text to explain
-     * @returns {string} - The formatted prompt
-     */
     buildPrompt(text) {
         return `You are JargoNaut, a concise tech jargon translator. Analyze this post and ONLY explain technical jargon, acronyms, and industry-specific terms that someone learning tech might not understand.
 
@@ -84,10 +84,6 @@ Post to analyze:
 Explain only the jargon:`;
     }
 
-    /**
-     * Test if the API key is valid
-     * @returns {Promise<boolean>} - True if valid, false otherwise
-     */
     async validateApiKey() {
         try {
             const response = await fetch(this.apiUrl, {
@@ -112,7 +108,6 @@ Explain only the jargon:`;
     }
 }
 
-// Export for use in different environments
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = JargoNautAI;
 }
