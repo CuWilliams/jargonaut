@@ -17,7 +17,6 @@
 		82C4F9982E9564DE005D0F08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82C4F9972E9564DE005D0F08 /* Assets.xcassets */; };
 		82C4F99F2E9564DE005D0F08 /* JargoNaut Safari Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C4F99E2E9564DE005D0F08 /* JargoNaut Safari Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		82C4F9A42E9564DE005D0F08 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C4F9A32E9564DE005D0F08 /* SafariWebExtensionHandler.swift */; };
-		82C4F9B52E9564DF005D0F08 /* platforms in Resources */ = {isa = PBXBuildFile; fileRef = 82C4F9B02E9564DF005D0F08 /* platforms */; };
 		82C4F9B62E9564DF005D0F08 /* core in Resources */ = {isa = PBXBuildFile; fileRef = 82C4F9B12E9564DF005D0F08 /* core */; };
 		82C4F9B72E9564DF005D0F08 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 82C4F9B22E9564DF005D0F08 /* icons */; };
 		82C4F9B82E9564DF005D0F08 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 82C4F9B32E9564DF005D0F08 /* manifest.json */; };
@@ -62,7 +61,6 @@
 		82C4F99E2E9564DE005D0F08 /* JargoNaut Safari Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "JargoNaut Safari Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82C4F9A32E9564DE005D0F08 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
 		82C4F9A52E9564DE005D0F08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		82C4F9B02E9564DF005D0F08 /* platforms */ = {isa = PBXFileReference; lastKnownFileType = folder; name = platforms; path = ../../chrome/platforms; sourceTree = "<group>"; };
 		82C4F9B12E9564DF005D0F08 /* core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = core; path = ../../chrome/core; sourceTree = "<group>"; };
 		82C4F9B22E9564DF005D0F08 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../chrome/icons; sourceTree = "<group>"; };
 		82C4F9B32E9564DF005D0F08 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../chrome/manifest.json; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 		82C4F9AF2E9564DF005D0F08 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				82C4F9B02E9564DF005D0F08 /* platforms */,
 				82C4F9B12E9564DF005D0F08 /* core */,
 				82C4F9B22E9564DF005D0F08 /* icons */,
 				82C4F9B32E9564DF005D0F08 /* manifest.json */,
@@ -203,7 +200,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					82C4F9822E9564DD005D0F08 = {
 						CreatedOnToolsVersion = 26.0.1;
@@ -253,7 +250,6 @@
 			files = (
 				82C4F9B82E9564DF005D0F08 /* manifest.json in Resources */,
 				82C4F9B72E9564DF005D0F08 /* icons in Resources */,
-				82C4F9B52E9564DF005D0F08 /* platforms in Resources */,
 				82C4F9B62E9564DF005D0F08 /* core in Resources */,
 				82C4F9B92E9564DF005D0F08 /* src in Resources */,
 			);
@@ -343,7 +339,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = PL3LWTG3XY;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -367,6 +365,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -406,7 +405,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PL3LWTG3XY;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -423,6 +424,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -432,7 +434,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PL3LWTG3XY;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -445,8 +447,8 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -467,7 +469,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PL3LWTG3XY;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -480,8 +482,8 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -505,7 +507,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PL3LWTG3XY;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -520,7 +522,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -547,7 +549,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PL3LWTG3XY;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -562,7 +564,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,

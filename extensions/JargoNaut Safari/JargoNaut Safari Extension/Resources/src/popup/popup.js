@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const setupSection = document.getElementById('setupSection');
     const instructions = document.getElementById('instructions');
     
+    // TEMPORARILY DISABLED FOR SCREENSHOTS
     // Check if already set up
+    /*
     chrome.storage.local.get(['modelSetup'], function(result) {
         if (result.modelSetup) {
             statusDiv.innerHTML = '<p>API key configured!</p>';
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             instructions.style.display = 'block';
         }
     });
+    */
     
     // Save button click
     saveBtn.addEventListener('click', function() {

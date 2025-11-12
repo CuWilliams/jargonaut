@@ -15,7 +15,14 @@ const JargoNautConfig = {
         referer: 'https://jargonaut.app',
         title: 'JargoNaut'
     },
-    
+   
+    // Subscription Configuration (future-proofing)
+    subscription: {
+        tier: 'free',              // Current: 'free' | Future: 'premium'
+        mode: 'user_api_key',      // Current: 'user_api_key' | Future: 'managed'
+        enabled: true              // Whether subscription system is active
+    },
+
     // Supported Platforms
     platforms: {
         twitter: {
