@@ -47,9 +47,21 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
             return;
         }
 
-        SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
+        if #available(macOS 13, *) {
+            // For macOS 13+, open System Settings directly to Extensions
+            NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preferences.extensions")!)
             DispatchQueue.main.async {
                 NSApplication.shared.terminate(nil)
+            }
+        } else {
+            // For older macOS, try the old API
+            SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
+                if let error = error {
+                    print("Error opening preferences: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    NSApplication.shared.terminate(nil)
+                }
             }
         }
     }
