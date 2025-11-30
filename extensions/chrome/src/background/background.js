@@ -10,8 +10,8 @@ importScripts('../../core/ai-engine.js');
 console.log('JargoNaut background script loaded - v' + JargoNautConfig.version);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('Background received:', request);
-    
+    // console.log('Background received:', request);
+
     if (request.action === 'setupModel') {
         handleSetupModel(request.apiKey, sendResponse);
         return true;

@@ -3,6 +3,8 @@
   "name": "JargoNaut",
   "version": "1.0.0",
   "description": "Navigate tech jargon with AI-powered explanations. Understand every tweet and post.",
+  "author": "Curtis Williams",
+  "homepage_url": "https://github.com/CuWilliams/jargonaut",
   "permissions": [
     "activeTab",
     "storage"
