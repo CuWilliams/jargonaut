@@ -69,36 +69,42 @@ class JargoNautAI {
 
     /**
      * Build the AI prompt for explaining jargon
+     * Optimized for Llama 3.2 3B with example-driven approach
      * @param {string} text - The text to explain
      * @returns {string} - The formatted prompt
      */
     buildPrompt(text) {
-        return `You are JargoNaut, an expert tech jargon translator. Your job is to identify and explain ONLY genuine technical terms that a tech beginner would struggle with.
+        // DESIGN RATIONALE:
+        // 1. Use examples instead of rules (better for smaller models)
+        // 2. Remove "unclear reference" escape hatch (forces explanation)
+        // 3. Simple structure: examples → task → input
+        // 4. Positive framing: "explain X" not "don't explain Y"
+        // 5. Clear format template via examples
 
-WHAT TO EXPLAIN:
-- Technical acronyms (API, SDK, LLM, GPU, etc.)
-- Programming terms (async, refactor, middleware, etc.)
-- Platform-specific jargon (Kubernetes, Docker, serverless, etc.)
-- Version numbers of technical products ONLY if they're significant (e.g., "GPT-4", "Python 3.12")
+        return `You are JargoNaut, helping beginners understand tech posts. Explain technical terms they wouldn't know.
 
-WHAT TO IGNORE:
-- Common words everyone knows (model, update, version, etc.)
-- Internet slang (nerf, buff, OP, etc.)
-- General business terms (launch, release, feature, etc.)
-- Obvious context (if "happy" or "excited" = skip it)
-- Product names that are self-explanatory
+EXAMPLES:
 
-RULES:
-- Maximum 75 words total
-- If a term is unclear even to you, say "unclear reference" rather than guessing
-- If there are 3+ jargon terms, explain the most important 2-3 only
-- Use format: "• term: brief explanation"
-- If NO genuine technical jargon exists, respond ONLY with: "No technical jargon detected."
+Post: "Just deployed our app with Docker containers on K8s"
+Response:
+• Docker: Software that packages applications in containers (isolated environments)
+• K8s: Short for Kubernetes, a system that manages containers at scale
 
-Post to analyze:
-"${text}"
+Post: "This new framework is so much better and faster"
+Response: No technical jargon detected.
 
-Explain only the genuine technical jargon:`;
+Post: "The LLM keeps hallucinating during RAG operations"
+Response:
+• LLM: Large Language Model, an AI trained on massive text data
+• Hallucinating: When AI generates false information confidently
+• RAG: Retrieval Augmented Generation, technique to give AI external knowledge
+
+YOUR TASK:
+Analyze this post and explain technical terms (acronyms, programming concepts, tools, frameworks). Ignore common words. Keep it under 75 words. If no jargon exists, respond: "No technical jargon detected."
+
+Post: "${text}"
+
+Your explanation:`;
     }
 
     /**
