@@ -1,8 +1,8 @@
 /**
-* JargoNaut Core AI Engine
-* Handles communication with OpenRouter API
-* This code is reusable across all browsers and platforms
-*/
+ * JargoNaut Core AI Engine
+ * Handles communication with OpenRouter API
+ * This code is reusable across all browsers and platforms
+ */
 
 class JargoNautAI {
     constructor(apiKey) {
@@ -67,23 +67,44 @@ class JargoNautAI {
         }
     }
 
+    /**
+     * Build the AI prompt for explaining jargon
+     * @param {string} text - The text to explain
+     * @returns {string} - The formatted prompt
+     */
     buildPrompt(text) {
-        return `You are JargoNaut, a concise tech jargon translator. Analyze this post and ONLY explain technical jargon, acronyms, and industry-specific terms that someone learning tech might not understand.
+        return `You are JargoNaut, an expert tech jargon translator. Your job is to identify and explain ONLY genuine technical terms that a tech beginner would struggle with.
 
-Rules:
-- Keep your TOTAL response under 100 words
-- Only explain technical terms, jargon, and acronyms
-- Skip obvious words and general concepts everyone knows
-- Use bullet points for multiple terms
-- Be direct and concise
-- If there's no jargon to explain, say "No technical jargon detected in this post."
+WHAT TO EXPLAIN:
+- Technical acronyms (API, SDK, LLM, GPU, etc.)
+- Programming terms (async, refactor, middleware, etc.)
+- Platform-specific jargon (Kubernetes, Docker, serverless, etc.)
+- Version numbers of technical products ONLY if they're significant (e.g., "GPT-4", "Python 3.12")
+
+WHAT TO IGNORE:
+- Common words everyone knows (model, update, version, etc.)
+- Internet slang (nerf, buff, OP, etc.)
+- General business terms (launch, release, feature, etc.)
+- Obvious context (if "happy" or "excited" = skip it)
+- Product names that are self-explanatory
+
+RULES:
+- Maximum 75 words total
+- If a term is unclear even to you, say "unclear reference" rather than guessing
+- If there are 3+ jargon terms, explain the most important 2-3 only
+- Use format: "• term: brief explanation"
+- If NO genuine technical jargon exists, respond ONLY with: "No technical jargon detected."
 
 Post to analyze:
 "${text}"
 
-Explain only the jargon:`;
+Explain only the genuine technical jargon:`;
     }
 
+    /**
+     * Test if the API key is valid
+     * @returns {Promise<boolean>} - True if valid, false otherwise
+     */
     async validateApiKey() {
         try {
             const response = await fetch(this.apiUrl, {
@@ -108,6 +129,7 @@ Explain only the jargon:`;
     }
 }
 
+// Export for use in different environments
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = JargoNautAI;
 }
