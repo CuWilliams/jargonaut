@@ -13,11 +13,11 @@ A browser extension that provides instant AI-powered explanations of technical j
 Ever scrolled through tech Twitter and seen terms like "SoC," "Exynos," or "boilerplate" and wished you had a quick way to understand them? JargoNaut adds a floating button to social media posts that, when clicked, uses AI to explain any technical jargon in plain English.
 
 **Key Features:**
-- 🔍 Instant jargon detection and explanation
-- 🤖 Powered by AI (OpenRouter API)
-- 🎨 Clean, unobtrusive UI
-- 🆓 Free and open source
-- 🌐 Works on Twitter/X and LinkedIn
+- Instant jargon detection and explanation
+- Powered by AI (OpenRouter API)
+- Clean, unobtrusive UI
+- Free and open source
+- Works on Twitter/X and LinkedIn
 
 ---
 
@@ -157,11 +157,11 @@ I'm learning to code, and I kept running into technical jargon on Twitter that I
 I'd love your help making JargoNaut better! This is a learning project, so contributions of all skill levels are welcome.
 
 **Ways to contribute:**
-- 🐛 Report bugs via [GitHub Issues](https://github.com/CuWilliams/jargonaut/issues)
-- 💡 Suggest features or improvements
-- 📝 Improve documentation
-- 🔧 Submit pull requests
-- ⭐ Star the repo to show support
+- Report bugs via [GitHub Issues](https://github.com/CuWilliams/jargonaut/issues)
+- Suggest features or improvements
+- Improve documentation
+- Submit pull requests
+- Star the repo to show support
 
 **Good first issues:**
 - Improve AI prompt for better jargon detection
@@ -196,11 +196,11 @@ jargonaut/
 ## 🎯 Roadmap
 
 ### Current Status
-- ✅ Chrome extension fully functional
-- ✅ Safari extension fully functional
-- ✅ AI jargon detection working well
-- ✅ Clean, polished UI
-- ✅ Open source release
+- Chrome extension fully functional
+- Safari extension fully functional
+- AI jargon detection working well
+- Clean, polished UI
+- Open source release
 
 ### Future Enhancements
 - [ ] Automated tests
